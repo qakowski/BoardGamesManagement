@@ -19,7 +19,7 @@ namespace BoardGamesManagement.Helpers
                 MaxPlayers = entity.MaxPlayers,
                 MinPlayers = entity.MinPlayers,
                 MinRecommendedAge = entity.MinRecommendedAge,
-                GameHistories = entity.GameHistory?.Select(p => _gameHistoryHelper.GetDTO(p)).ToList()
+                GameHistories = entity.GameHistory?.OrderBy(p => p.DisplayDate).Select(p => _gameHistoryHelper.GetDTO(p)).ToList()
             };
     }
 }
