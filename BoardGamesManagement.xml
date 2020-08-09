@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BoardGamesManagement</name>
+    </assembly>
+    <members>
+        <member name="M:BoardGamesManagement.Database.IRepository`1.AddItem(`0)">
+            <summary>
+            Adds item to database
+            </summary>
+            <param name="item"></param>
+            <returns>Items saved in databse</returns>
+        </member>
+        <member name="M:BoardGamesManagement.Database.IRepository`1.GetItem(System.Guid)">
+            <summary>
+            Get item by given ID
+            </summary>
+            <param name="id"></param>
+            <returns>Item of given ID</returns>
+        </member>
+        <member name="M:BoardGamesManagement.Database.IRepository`1.GetItems(System.Nullable{System.Int32})">
+            <summary>
+            Get list of items with given limit of items (if limit is null, then returns all items)
+            </summary>
+            <param name="limit">Limit of returned items - if null returns all</param>
+            <returns>List of items</returns>
+        </member>
+        <member name="M:BoardGamesManagement.Database.IRepository`1.GetItems(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Get list of items by provided expression
+            </summary>
+            <param name="expression">Expression that determines items to be selected</param>
+            <returns>List of items</returns>
+        </member>
+        <member name="M:BoardGamesManagement.Database.IRepository`1.UpdateItem(`0)">
+            <summary>
+            Updates item in database
+            </summary>
+            <param name="item"></param>
+            <returns>Updated item</returns>
+        </member>
+        <member name="M:BoardGamesManagement.Database.IRepository`1.DeleteItem(System.Guid)">
+            <summary>
+            Removes item from database
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BoardGamesManagement.Database.IRepository`1.DeleteItem(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Removes item from database
+            </summary>
+            <param name="expression"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
