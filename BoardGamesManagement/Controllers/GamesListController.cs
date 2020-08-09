@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using BoardGamesManagement.Database.UnitsOfWork;
 using BoardGamesManagement.Domain;
 using BoardGamesManagement.DTO;
+using BoardGamesManagement.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,16 @@ namespace BoardGamesManagement.Controllers
     public class GamesListController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly  IHelper<Game, GameDTO> _gameHelper;
+        private readonly IHelper<Game, GamesListDTO> _gameListHelper;
 
-        public GamesListController(IUnitOfWork unitOfWork)
+        public GamesListController(IUnitOfWork unitOfWork, 
+            IHelper<Game, GameDTO> gameHelper, 
+            IHelper<Game, GamesListDTO> gameListHelper)
         {
             _unitOfWork = unitOfWork;
+            _gameHelper = gameHelper;
+            _gameListHelper = gameListHelper;
         }
 
         // GET: GamesListController
@@ -23,11 +30,7 @@ namespace BoardGamesManagement.Controllers
         {
             var games = await _unitOfWork.GamesRepository.GetGamesAsync(null);
 
-            var gamesDTOs = games.Select(game => new GamesListDTO
-            {
-                Id = game.Id,
-                Name = game.Name
-            });
+            var gamesDTOs = games.Select(game => _gameListHelper.GetDTO(game));
 
             return View(gamesDTOs);
         }
@@ -36,6 +39,7 @@ namespace BoardGamesManagement.Controllers
         public async Task<ActionResult> Details(Guid id)
         {
             var game = await _unitOfWork.GamesRepository.GetGameByIdAsync(id);
+
             if (game == null)
                 return RedirectToAction(nameof(Index));
 
@@ -49,24 +53,10 @@ namespace BoardGamesManagement.Controllers
 
             await _unitOfWork.Save();
 
-            var gameDTO = new GameDTO
-            {
-                Id = game.Id,
-                MinPlayers = game.MinPlayers,
-                MaxPlayers = game.MaxPlayers,
-                MinRecommendedAge = game.MinRecommendedAge,
-                Name = game.Name,
-                GameHistories = game.GameHistory.OrderBy(p => p.DisplayDate).Select(p => new GameHistoryDTO
-                {
-                    Source = p.Source,
-                    DisplayDate = p.DisplayDate
-                }).ToList()
-            };
+            var gameDTO = _gameHelper.GetDTO(game);
 
             return View(gameDTO);
         }
-
-        // GET: GamesListController/Create
         public ActionResult Create()
         {
             return View(new Game());
@@ -110,7 +100,7 @@ namespace BoardGamesManagement.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _unitOfWork.GamesRepository.UpdateAsync(game);
+                    _unitOfWork.GamesRepository.Update(game);
                     await _unitOfWork.Save();
                     return RedirectToAction(nameof(Index));
                 }

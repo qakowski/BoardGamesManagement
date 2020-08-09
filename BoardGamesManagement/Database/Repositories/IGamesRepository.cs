@@ -11,6 +11,6 @@ namespace BoardGamesManagement.Database.Repositories
         public Task<IEnumerable<Game>> GetGamesAsync(int? gamesCount);
         public Task<Game> GetGameByIdAsync(Guid gameId);
         public Task DeleteAsync(Guid gameId);
-        public Game UpdateAsync(Game game);
+        public Game Update(Game game);
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BoardGamesManagement.Database.UnitsOfWork;
 using BoardGamesManagement.Domain;
 using BoardGamesManagement.DTO;
+using BoardGamesManagement.Helpers;
 using BoardGamesManagement.Request;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,13 +16,20 @@ namespace BoardGamesManagement.Controllers
     public class GamesAPI : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IHelper<Game, GameDTO> _gameHelper;
 
-        public GamesAPI(IUnitOfWork unitOfWork)
+        public GamesAPI(IUnitOfWork unitOfWork, 
+            IHelper<Game, GameDTO> gameHelper)
         {
             _unitOfWork = unitOfWork;
+            _gameHelper = gameHelper;
         }
 
-        // GET: api/<BoardGamesManagementAPI>
+        /// <summary>
+        /// Get games from database
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpGet("game/games-list")]
         public async  Task<ActionResult<IEnumerable<GamesListDTO>>> GetGames([FromQuery] GetGamesRequest request)
         {
@@ -30,23 +38,23 @@ namespace BoardGamesManagement.Controllers
             if (games.Count() == 0)
                 return NotFound();
 
-            var gamesDTO = games.Select(game => new GameDTO
-            {
-                Id = game.Id,
-                MinPlayers = game.MinPlayers,
-                MaxPlayers = game.MaxPlayers,
-                MinRecommendedAge = game.MinRecommendedAge,
-                Name = game.Name
-            });
+            var gamesDTO = games.Select(game => _gameHelper.GetDTO(game));
 
             return Ok(gamesDTO);
         }
 
-        // GET api/<BoardGamesManagementAPI>/5
+        /// <summary>
+        /// Get game details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("game/{id}")]
         public async Task<ActionResult<GameDTO>> GetGameDetailsById([FromRoute] Guid id)
         {
             var game = await _unitOfWork.GamesRepository.GetGameByIdAsync(id);
+
+            if (game == null)
+                return NotFound();
 
             await _unitOfWork.GamesHistoryRepository.AddToVisitHistory(new GameHistory
             {
@@ -57,25 +65,9 @@ namespace BoardGamesManagement.Controllers
 
             await _unitOfWork.Save();
 
-            var gameDTO = new GameDTO
-            {
-                Id = game.Id,
-                MinPlayers = game.MinPlayers,
-                MaxPlayers = game.MaxPlayers,
-                MinRecommendedAge = game.MinRecommendedAge,
-                Name = game.Name,
-                GameHistories = game.GameHistory.OrderBy(p => p.DisplayDate).Select(p => new GameHistoryDTO
-                {
-                    Source = p.Source,
-                    DisplayDate = p.DisplayDate
-                }).ToList()
-            };
+            var gameDTO = _gameHelper.GetDTO(game);
 
-            if (game == null)
-                return NotFound();
-
-            return Ok(gameDTO);
-            
+            return Ok(gameDTO);          
         }
     }
 }

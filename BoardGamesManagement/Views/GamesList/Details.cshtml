@@ -50,7 +50,11 @@
                    {
                        <tr>
                            <td>
-                               @Html.DisplayFor(model => history.DisplayDate)
+                               @{ 
+                                   var localDate = TimeZoneInfo.ConvertTimeFromUtc(history.DisplayDate, TimeZoneInfo.Local);
+                                   @Html.DisplayFor(model => localDate);
+                               }
+                               
                            </td>
                            <td>
                                @Html.DisplayFor(model => history.Source)
@@ -63,6 +67,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.Id  }) |
     <a asp-action="Index">Back to List</a>
 </div>

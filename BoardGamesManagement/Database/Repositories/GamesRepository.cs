@@ -34,7 +34,7 @@ namespace BoardGamesManagement.Database.Repositories
             return await _gamesRepository.GetItems(gamesCount);
         }
 
-        public Game UpdateAsync(Game game)
+        public Game Update(Game game)
         {
             return _gamesRepository.UpdateItem(game);
         }

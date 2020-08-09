@@ -4,6 +4,20 @@
         <name>BoardGamesManagement</name>
     </assembly>
     <members>
+        <member name="M:BoardGamesManagement.Controllers.GamesAPI.GetGames(BoardGamesManagement.Request.GetGamesRequest)">
+            <summary>
+            Get games from database
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BoardGamesManagement.Controllers.GamesAPI.GetGameDetailsById(System.Guid)">
+            <summary>
+            Get game details
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="M:BoardGamesManagement.Database.IRepository`1.AddItem(`0)">
             <summary>
             Adds item to database
