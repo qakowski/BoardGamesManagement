@@ -14,8 +14,8 @@ namespace BoardGamesManagement.Swagger
             {
                 o.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Description = "Expertal system API created for bachleor degree",
-                    Title = "Expertal System API",
+                    Description = "API for board games",
+                    Title = "BoardGamesManagement",
                     Version = "v1",
                     Contact = new OpenApiContact
                     {
