@@ -17,12 +17,15 @@ namespace BoardGamesManagement.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHelper<Game, GameDTO> _gameHelper;
+        private readonly IHelper<Game, GamesListDTO> _gameListHelper;
 
         public GamesAPI(IUnitOfWork unitOfWork, 
-            IHelper<Game, GameDTO> gameHelper)
+            IHelper<Game, GameDTO> gameHelper,
+            IHelper<Game, GamesListDTO> gameListHelper)
         {
             _unitOfWork = unitOfWork;
             _gameHelper = gameHelper;
+            _gameListHelper = gameListHelper;
         }
 
         /// <summary>
@@ -38,7 +41,7 @@ namespace BoardGamesManagement.Controllers
             if (games.Count() == 0)
                 return NotFound();
 
-            var gamesDTO = games.Select(game => _gameHelper.GetDTO(game));
+            var gamesDTO = games.Select(game => _gameListHelper.GetDTO(game));
 
             return Ok(gamesDTO);
         }
