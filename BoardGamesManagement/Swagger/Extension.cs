@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -30,5 +31,11 @@ namespace BoardGamesManagement.Swagger
             });
             return services;
         }
+
+        //public static IApplicationBuilder UseSwagger(this IApplicationBuilder app)
+        //{
+           
+        //    return app;
+        //}
     }
 }

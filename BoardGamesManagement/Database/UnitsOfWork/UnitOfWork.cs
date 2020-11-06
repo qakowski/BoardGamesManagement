@@ -9,7 +9,9 @@ namespace BoardGamesManagement.Database.UnitsOfWork
 
         public IGamesHistoryRepository GamesHistoryRepository { get; }
 
+#if EF
         private readonly BoardGamesContext _context;
+
 
         public UnitOfWork(IGamesRepository gamesRepository, IGamesHistoryRepository gamesHistoryRepository, BoardGamesContext context)
         {
@@ -22,5 +24,17 @@ namespace BoardGamesManagement.Database.UnitsOfWork
         {
             return await _context.SaveChangesAsync();
         }
+#elif NHIB
+        public UnitOfWork(IGamesRepository gamesRepository, IGamesHistoryRepository gamesHistoryRepository)
+        {
+            GamesRepository = gamesRepository;
+            GamesHistoryRepository = gamesHistoryRepository;
+        }
+
+        public Task<int> Save()
+        {
+            throw new System.NotImplementedException();
+        }
+#endif
     }
 }

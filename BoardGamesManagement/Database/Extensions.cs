@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+#if EF
 namespace BoardGamesManagement.Database
 {
     public static class Extensions
@@ -60,3 +60,4 @@ namespace BoardGamesManagement.Database
         }
     }
 }
+#endif

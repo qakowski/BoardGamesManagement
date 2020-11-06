@@ -2,6 +2,7 @@ using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BoardGamesManagement.Database;
+using BoardGamesManagement.Database.NHibernateDb;
 using BoardGamesManagement.Domain;
 using BoardGamesManagement.Swagger;
 using Microsoft.AspNetCore.Builder;
@@ -33,10 +34,18 @@ namespace BoardGamesManagement
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly()).AsImplementedInterfaces();
+#if EF
+
 
             builder.RegisterContext<BoardGamesContext>();
             builder.RegisterRepository<Game>();
             builder.RegisterRepository<GameHistory>();
+#elif NHIB
+            builder.RegisterSessionFactory(Configuration.GetSection("DatabaseOptions").GetValue<string>("ConnectionString"));
+            builder.RegisterSession();
+            builder.RegisterNHibRepository<Game>();
+            builder.RegisterNHibRepository<GameHistory>();
+#endif
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +74,7 @@ namespace BoardGamesManagement
             {
                 o.SwaggerEndpoint("v1/swagger.json", "v1");
             });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

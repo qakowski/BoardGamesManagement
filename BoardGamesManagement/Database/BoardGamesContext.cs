@@ -1,6 +1,8 @@
 ﻿using BoardGamesManagement.Domain;
 using Microsoft.EntityFrameworkCore;
 
+#if EF
+
 namespace BoardGamesManagement.Database
 {
     public class BoardGamesContext : DbContext
@@ -28,3 +30,4 @@ namespace BoardGamesManagement.Database
         public DbSet<GameHistory> GameHistories { get; set; }
     }
 }
+#endif

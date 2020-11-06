@@ -8,9 +8,9 @@ namespace BoardGamesManagement.Domain
     {
 
         [ForeignKey("Games")]
-        public Guid GameId { get; set; }
-        public DateTime DisplayDate { get; set; }
-        public string Source { get; set; }
+        public virtual Guid GameId { get; set; }
+        public virtual DateTime DisplayDate { get; set; }
+        public virtual string Source { get; set; }
         public virtual Game Game { get; set; }
     }
 }

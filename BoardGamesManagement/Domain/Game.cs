@@ -6,10 +6,10 @@ namespace BoardGamesManagement.Domain
     [Table("Games")]
     public class Game : BaseEntity
     {
-        public string Name { get; set; }
-        public int MinPlayers { get; set; }
-        public int MaxPlayers { get; set; }
-        public int MinRecommendedAge { get; set; }
-        public virtual IEnumerable<GameHistory> GameHistory { get; set; }
+        public virtual string Name { get; set; }
+        public virtual int MinPlayers { get; set; }
+        public virtual int MaxPlayers { get; set; }
+        public virtual int MinRecommendedAge { get; set; }
+        public virtual IEnumerable<GameHistory> GameHistory { get; protected set; }
     }
 }

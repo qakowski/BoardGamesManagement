@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BoardGamesManagement.Database
 {
+
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
         private readonly BoardGamesContext _dbContext;
